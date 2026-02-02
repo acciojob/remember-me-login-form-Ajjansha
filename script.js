@@ -1,40 +1,44 @@
-//your JS code here. If required.
-const form = document.getElementById("login-form");
+// Get elements safely
+const form = document.querySelector("form");
 const usernameInput = document.getElementById("username");
 const passwordInput = document.getElementById("password");
 const checkbox = document.getElementById("checkbox");
 const existingBtn = document.getElementById("existing");
 
-// Check saved credentials on page load
+// Show existing user button if credentials exist
 const savedUsername = localStorage.getItem("username");
 const savedPassword = localStorage.getItem("password");
 
-if (savedUsername && savedPassword) {
+if (existingBtn && savedUsername && savedPassword) {
   existingBtn.style.display = "inline-block";
 }
 
-// Form submit
-form.addEventListener("submit", function (e) {
-  e.preventDefault();
+// Handle form submit (ONLY if form exists)
+if (form) {
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
 
-  const username = usernameInput.value;
-  const password = passwordInput.value;
+    const username = usernameInput.value;
+    const password = passwordInput.value;
 
-  alert(`Logged in as ${username}`);
+    alert(`Logged in as ${username}`);
 
-  if (checkbox.checked) {
-    localStorage.setItem("username", username);
-    localStorage.setItem("password", password);
-    existingBtn.style.display = "inline-block";
-  } else {
-    localStorage.removeItem("username");
-    localStorage.removeItem("password");
-    existingBtn.style.display = "none";
-  }
-});
+    if (checkbox.checked) {
+      localStorage.setItem("username", username);
+      localStorage.setItem("password", password);
+      if (existingBtn) existingBtn.style.display = "inline-block";
+    } else {
+      localStorage.removeItem("username");
+      localStorage.removeItem("password");
+      if (existingBtn) existingBtn.style.display = "none";
+    }
+  });
+}
 
-// Login as existing user
-existingBtn.addEventListener("click", function () {
-  const savedUser = localStorage.getItem("username");
-  alert(`Logged in as ${savedUser}`);
-});
+// Handle existing user login (ONLY if button exists)
+if (existingBtn) {
+  existingBtn.addEventListener("click", function () {
+    const savedUser = localStorage.getItem("username");
+    alert(`Logged in as ${savedUser}`);
+  });
+}
